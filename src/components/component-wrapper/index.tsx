@@ -9,7 +9,7 @@ interface IComponentWrapperProps {
 export default function ComponentWrapper(props: IComponentWrapperProps) {
   return (
     <SafeAreaView>
-        <View style={tw`py-4 px-4`}>
+        <View style={tw`py-6 px-2`}>
             {props.children}
         </View>
     </SafeAreaView>
