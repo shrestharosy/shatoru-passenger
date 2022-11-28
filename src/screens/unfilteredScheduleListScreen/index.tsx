@@ -9,7 +9,7 @@ interface IScheduleListProps {
     location: string;
 }
 
-export default function FilteredScheduleList() {
+export default function UnfilteredScheduleList() {
     const [scheduleList, setScheduleList] = useState<IScheduleListProps[]>([
         { time: '12:00 AM', location: 'Fairlane Woods' },
         { time: '12:10 AM', location: 'Fairlane Meadows' },

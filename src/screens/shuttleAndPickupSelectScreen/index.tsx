@@ -6,9 +6,9 @@ import tw from '../../styles/tailwind';
 export default function SelectShuttleAndPickup() {
   return (
     <View>
-    <View style={tw`bg-lightGray rounded-xl w-full`}>
+    <View style={tw`mt-12 rounded-xl w-full`}>
         <Text
-        style={tw`text-brownRed text-lg mt-2 font-bold`}
+        style={tw`text-lg mt-2 font-bold`}
         >
         UMD Shuttle Service
         </Text>
