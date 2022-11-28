@@ -20,7 +20,7 @@ export default function SelectShuttleAndPickup() {
             <Pressable style={tw`w-full p-2 border border-1 rounded-md mb-4`}>
                 <Text style={tw`text-xl text-center`}>Blue Shuttle</Text>
             </Pressable>
-            <Pressable style={tw`p-2 border border-1 rounded-md`}>
+            <Pressable style={tw`p-2 border border-1  rounded-md`}>
                 <Text style={tw`text-xl text-center`}>Maize Shuttle</Text>
             </Pressable>
         </View>

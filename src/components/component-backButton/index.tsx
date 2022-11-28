@@ -5,7 +5,7 @@ import { IMAGE } from '../../images/image';
 
 export default function ComponentBackButton() {
     return (
-        <View style={tw`w-full flex flex-row`}>
+        <View style={tw`w-full flex flex-row bg-slate-200 py-2`}>
             <View style={tw`w-8 rounded-full`}>
                 <Image
                     source={IMAGE.LEFTARROW}
