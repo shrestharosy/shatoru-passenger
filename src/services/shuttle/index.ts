@@ -11,7 +11,7 @@ const fetchStops = async () => {
 
 const fetchShuttles = async () => {
     const response: AxiosResponse<Array<IShuttle>> = await axiosInstance.get(
-        `/shuttles/schedules/`
+        `/shuttles/`
     );
     return response.data;
 };

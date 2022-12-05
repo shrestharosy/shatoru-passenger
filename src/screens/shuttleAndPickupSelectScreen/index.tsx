@@ -40,7 +40,7 @@ export default function SelectShuttleAndPickup() {
                             style={tw`w-full p-2 border border-1 rounded-md mb-4`}
                         >
                             <Text style={tw`text-xl text-center`}>
-                                {shuttle.shuttle}
+                                {shuttle.name}
                             </Text>
                         </Pressable>
                     ))}
