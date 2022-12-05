@@ -4,13 +4,29 @@ export interface IStop {
     abbreviation: string;
 }
 
-export interface IShuttle {
-    id: number;
+export interface IScheduleObject {
+    stop_name: string;
+    stop_abbr: string;
+    time: string;
+}
+
+export interface IShuttleSchedulePayload {
     shuttle: string;
     start_time: Date;
     end_time: Date;
-    stops: IStopJSON;
+    // stops: IStopJSON;
+    schedule: Array<IScheduleObject>;
     days: Array<string>;
+}
+
+export interface IShuttleResponse {
+    id: number;
+    name: string;
+    schedules: Array<string>;
+}
+
+export interface IScheduleResponse extends IShuttleSchedulePayload {
+    id: string;
 }
 
 export interface IStopJSON {
