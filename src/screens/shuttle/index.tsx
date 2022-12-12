@@ -1,57 +1,94 @@
-import { Card } from '@rneui/themed';
+import { Card, Text } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, Text, View } from 'react-native';
-import ShuttleRow from 'src/components/Shuttle/ShuttleRow';
+import { SafeAreaView, View } from 'react-native';
 import { IRouteProps } from 'src/libs/routes';
 import { shuttleService } from 'src/services/shuttle';
-import { IShuttleResponse } from 'src/services/shuttle/shuttle.type';
+import { IScheduleResponse } from 'src/services/shuttle/shuttle.type';
+import ScheduleListRow from './ScheduleListRow';
 
-interface IShuttleProps extends IRouteProps {
-    location: string;
-}
+interface IScheduleProps extends IRouteProps {}
 
-function Shuttle(props: IShuttleProps) {
+const Schedule = (props: IScheduleProps) => {
+    const [schedules, setSchedules] = useState<Array<IScheduleResponse>>([]);
+    const [isLoading, setIsLoading] = useState(false);
+
     const { navigation } = props;
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [shuttles, setShuttles] = useState<Array<IShuttleResponse>>([]);
-
     useEffect(() => {
-        getShuttles();
+        const scheduleIds: Array<string> = props?.route?.params?.scheduleIds;
+        if (scheduleIds) {
+            request(scheduleIds);
+        }
     }, []);
 
-    const getShuttles = async () => {
+    const request = async (scheduleIds: Array<string>) => {
         try {
-            setIsLoading(true);
-            const response = await shuttleService.fetchShuttles();
-            setShuttles(response);
-        } catch (error: any) {
-            console.log(error.message??"Error while fetching shuttles");
-        } finally {
-            setIsLoading(false);
+            await fetchSchedules(scheduleIds);
+        } catch (error) {
+            alert('Error while fetching schedule. Please try again later');
+        }
+    };
+
+    const onDelete = async (id: string) => {};
+
+    const fetchSchedules = async (scheduleIds: Array<string>) => {
+        try {
+            let schedulesList: Array<IScheduleResponse> = [];
+
+            await Promise.all(
+                scheduleIds.map(async (scheduleId) => {
+                    const schedule = await fetchSchedule(scheduleId);
+                    schedulesList.push(schedule);
+                    return schedule;
+                })
+            );
+
+            setSchedules(schedulesList);
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    };
+
+    const fetchSchedule = async (id: string) => {
+        try {
+            const response = await shuttleService.fetchSchedule(id);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
         }
     };
 
     return (
-        <SafeAreaView>
-            <Card>
-                {isLoading && <Text>Loading...</Text>}
-                {!isLoading &&
-                    shuttles.length > 0 &&
-                    shuttles.map((shuttle) => (
-                        <ShuttleRow
-                            key={shuttle.id}
-                            shuttle={shuttle}
-                        />
-                    ))}
-                {!isLoading && shuttles.length === 0 && (
-                    <View>
-                        <Text>No shuttle found</Text>
-                    </View>
+        <>
+            <SafeAreaView>
+                {isLoading && (
+                    <Card>
+                        <Text>Loading...</Text>{' '}
+                    </Card>
                 )}
-            </Card>
-        </SafeAreaView>
+                {!isLoading &&
+                    schedules.length > 0 &&
+                    schedules.map((schedule, index) => (
+                        <Card key={schedule.id}>
+                            <ScheduleListRow
+                                index={index + 1}
+                                schedule={schedule}
+                                onDelete={onDelete}
+                            />
+                        </Card>
+                    ))}
+                {!isLoading && schedules.length === 0 && (
+                    <Card>
+                        <View>
+                            <Text>No schedule found</Text>
+                        </View>
+                    </Card>
+                )}
+            </SafeAreaView>
+        </>
     );
-}
+};
 
-export default Shuttle;
+export default Schedule;

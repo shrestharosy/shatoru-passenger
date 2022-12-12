@@ -3,7 +3,7 @@ import { SafeAreaView, View } from 'react-native';
 import tw from '../../styles/tailwind';
 
 interface IComponentWrapperProps {
-    children: Array<JSX.Element>;
+    children: any;
 }
 
 export default function ComponentWrapper(props: IComponentWrapperProps) {
