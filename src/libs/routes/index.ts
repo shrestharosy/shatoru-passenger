@@ -1,13 +1,7 @@
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 type IRouteList = {
-   
-    Shuttle: undefined;
-    
-};
-
-type ScheduleListParams = {
-    shuttleId: number;
+    Shuttles: undefined;
 };
 
 export interface IRouteProps extends NativeStackScreenProps<IRouteList, any> {}
