@@ -1,14 +1,15 @@
 import { Card, Text } from '@rneui/themed';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView, View } from 'react-native';
+import Loader from 'src/components/loader';
 import { IRouteProps } from 'src/libs/routes';
 import { shuttleService } from 'src/services/shuttle';
 import { IScheduleResponse } from 'src/services/shuttle/shuttle.type';
-import ScheduleListRow from './ScheduleListRow';
+import Schedule from './Schedule';
 
 interface IScheduleProps extends IRouteProps {}
 
-const Schedule = (props: IScheduleProps) => {
+const Shuttle = (props: IScheduleProps) => {
     const [schedules, setSchedules] = useState<Array<IScheduleResponse>>([]);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -23,9 +24,12 @@ const Schedule = (props: IScheduleProps) => {
 
     const request = async (scheduleIds: Array<string>) => {
         try {
+            setIsLoading(true);
             await fetchSchedules(scheduleIds);
         } catch (error) {
             alert('Error while fetching schedule. Please try again later');
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -65,14 +69,14 @@ const Schedule = (props: IScheduleProps) => {
             <SafeAreaView>
                 {isLoading && (
                     <Card>
-                        <Text>Loading...</Text>{' '}
+                        <Loader />
                     </Card>
                 )}
                 {!isLoading &&
                     schedules.length > 0 &&
                     schedules.map((schedule, index) => (
                         <Card key={schedule.id}>
-                            <ScheduleListRow
+                            <Schedule
                                 index={index + 1}
                                 schedule={schedule}
                                 onDelete={onDelete}
@@ -91,4 +95,4 @@ const Schedule = (props: IScheduleProps) => {
     );
 };
 
-export default Schedule;
+export default Shuttle;
