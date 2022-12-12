@@ -74,13 +74,9 @@ const Shuttle = (props: IScheduleProps) => {
                 )}
                 {!isLoading &&
                     schedules.length > 0 &&
-                    schedules.map((schedule, index) => (
+                    schedules.map((schedule) => (
                         <Card key={schedule.id}>
-                            <Schedule
-                                index={index + 1}
-                                schedule={schedule}
-                                onDelete={onDelete}
-                            />
+                            <Schedule schedule={schedule} />
                         </Card>
                     ))}
                 {!isLoading && schedules.length === 0 && (

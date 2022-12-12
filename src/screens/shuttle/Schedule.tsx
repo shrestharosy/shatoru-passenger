@@ -1,17 +1,56 @@
 import { Text } from '@rneui/themed';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, View } from 'react-native';
+import CustomMultiSelect from 'src/components/form/CustomMultiSelect';
 import { parseTime } from 'src/libs/util/datetime';
-import { IScheduleResponse } from 'src/services/shuttle/shuttle.type';
+import {
+    IOption,
+    IScheduleObject,
+    IScheduleResponse,
+} from 'src/services/shuttle/shuttle.type';
 import tw from 'src/styles/tailwind';
 
 interface IScheduleProps {
-    index: number;
     schedule: IScheduleResponse;
 }
 
+interface IStop {
+    stop_abbr: string;
+    stop_name: string;
+}
+
 const Schedule = (props: IScheduleProps) => {
-    const { index, schedule } = props;
+    const { schedule } = props;
+
+    const [stops, setStops] = useState<Array<IOption>>([]);
+    const [schedules, setSchedules] = useState<Array<IScheduleObject>>([]);
+    const [selectedOptions, setSelectedOptions] = React.useState<Array<string>>(
+        []
+    );
+
+    useEffect(() => {
+        const uniqueScheduleStops = [
+            ...new Map(schedule.schedule.map((s) => [s.stop_name, s])).values(),
+        ];
+        const uniqueStops = uniqueScheduleStops.map((schedule) => ({
+            value: schedule.stop_abbr,
+            label: schedule.stop_name,
+        }));
+        setStops(uniqueStops);
+        setSchedules(schedule.schedule);
+    }, [schedule]);
+
+    useEffect(() => {
+        if (selectedOptions.length > 0) {
+            setSchedules(
+                schedule.schedule.filter((s) =>
+                    selectedOptions.includes(s.stop_abbr)
+                )
+            );
+        } else {
+            setSchedules(schedule.schedule);
+        }
+    }, [selectedOptions]);
 
     return (
         <View>
@@ -31,8 +70,18 @@ const Schedule = (props: IScheduleProps) => {
                         </View>
                     ))}
                 </View>
+                <View style={tw`mb-4`}>
+                    <CustomMultiSelect
+                        options={stops}
+                        showSelectedOptionsAsTags={true}
+                        selectedOptions={selectedOptions}
+                        onChange={(item) => {
+                            setSelectedOptions(item);
+                        }}
+                    />
+                </View>
                 <ScrollView>
-                    {schedule.schedule.map((s, index) => (
+                    {schedules.map((s, index) => (
                         <View
                             key={`${s.time}-${index}`}
                             style={tw`flex flex-row pb-2`}

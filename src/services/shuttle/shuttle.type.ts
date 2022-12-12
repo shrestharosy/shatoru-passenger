@@ -34,3 +34,8 @@ export interface IStopJSON {
     // value: interval
     [key: string]: number;
 }
+
+export interface IOption {
+    label: string;
+    value: string;
+}
